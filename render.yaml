@@ -1,0 +1,14 @@
+# Single service: FastAPI serves the built UI + the API (SSE works here, unlike Vercel).
+# Render > New > Blueprint > this repo. Set ANTHROPIC_API_KEY in the dashboard.
+services:
+  - type: web
+    name: verity
+    runtime: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: ANTHROPIC_API_KEY
+        sync: false
+      - key: PYTHON_VERSION
+        value: "3.12.6"
