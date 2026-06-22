@@ -6,7 +6,67 @@ and so the decision logic stays explainable in the interview.
 import re
 from difflib import SequenceMatcher
 
-import jellyfish  # phonetic + edit-distance name matching (Soundex/Metaphone/Jaro-Winkler)
+
+# --- Pure-Python phonetic / edit-distance helpers (no compiled deps) -----------
+def _jaro(a, b):
+    if a == b:
+        return 1.0
+    la, lb = len(a), len(b)
+    if la == 0 or lb == 0:
+        return 0.0
+    md = max(la, lb) // 2 - 1
+    am, bm = [False] * la, [False] * lb
+    matches = 0
+    for i in range(la):
+        for j in range(max(0, i - md), min(i + md + 1, lb)):
+            if not bm[j] and a[i] == b[j]:
+                am[i] = bm[j] = True
+                matches += 1
+                break
+    if not matches:
+        return 0.0
+    t = k = 0
+    for i in range(la):
+        if am[i]:
+            while not bm[k]:
+                k += 1
+            if a[i] != b[k]:
+                t += 1
+            k += 1
+    t //= 2
+    return (matches / la + matches / lb + (matches - t) / matches) / 3
+
+
+def jaro_winkler(a, b, p=0.1):
+    """Jaro-Winkler similarity 0..1 — boosts common-prefix matches (good for
+    transliterations / minor spelling differences in names)."""
+    j = _jaro(a, b)
+    pl = 0
+    for x, y in zip(a, b):
+        if x == y and pl < 4:
+            pl += 1
+        else:
+            break
+    return j + pl * p * (1 - j)
+
+
+_SDX = {**dict.fromkeys("bfpv", "1"), **dict.fromkeys("cgjkqsxz", "2"),
+        **dict.fromkeys("dt", "3"), "l": "4", **dict.fromkeys("mn", "5"), "r": "6"}
+
+
+def soundex(s):
+    """Classic Soundex code — a 'sounds-alike' fingerprint for a name."""
+    s = re.sub(r"[^a-z]", "", (s or "").lower())
+    if not s:
+        return ""
+    out, prev = s[0].upper(), _SDX.get(s[0], "")
+    for ch in s[1:]:
+        c = _SDX.get(ch, "")
+        if c and c != prev:
+            out += c
+        if ch not in "hw":
+            prev = c
+    return (out + "000")[:4]
 
 # --- Tax ID formats per country -------------------------------------------------
 # Keyed by ISO-2 country code. Each entry: (human label, compiled regex).
@@ -163,11 +223,11 @@ def sanctions_match(name, blocklist):
             continue
         if name_similarity(name, b.get("name")) >= 0.85:
             return {**b, "method": "fuzzy token-set"}
-        if jellyfish.jaro_winkler_similarity(nn, bn) >= 0.90:
+        if jaro_winkler(nn.replace(" ", ""), bn.replace(" ", "")) >= 0.90:
             return {**b, "method": "Jaro-Winkler"}
-        mp = jellyfish.metaphone(nn)
-        if mp and mp == jellyfish.metaphone(bn):
-            return {**b, "method": "Metaphone (sounds-alike)"}
+        sc = soundex(nn.replace(" ", ""))
+        if sc and sc == soundex(bn.replace(" ", "")):
+            return {**b, "method": "Soundex (sounds-alike)"}
     return None
 
 
