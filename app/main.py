@@ -8,6 +8,7 @@ from typing import Optional
 from fastapi import FastAPI, Request, Form, UploadFile, File
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse, JSONResponse
+from fastapi.staticfiles import StaticFiles
 
 from . import engine, llm, store, extract, validators as V
 
@@ -208,6 +209,13 @@ async def run_submission(
     return StreamingResponse(gen(), media_type="text/event-stream")
 
 
-@app.get("/")
-def index():
-    return {"service": "verity-api", "note": "API only — the UI runs from web/"}
+# Serve the built frontend so the whole app is ONE service at one URL.
+# Mounted last so all /api/* routes above take precedence; html=True serves
+# index.html at "/". Falls back to an API-only note if the build isn't present.
+_DIST = os.path.join(_BASE, "web", "dist")
+if os.path.isdir(_DIST):
+    app.mount("/", StaticFiles(directory=_DIST, html=True), name="ui")
+else:
+    @app.get("/")
+    def _root():
+        return {"service": "verity-api", "note": "UI build not found — run `npm run build` in web/"}
