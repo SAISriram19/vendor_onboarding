@@ -1,0 +1,22 @@
+* { box-sizing: border-box; }
+html, body, #root { margin: 0; padding: 0; height: 100%; }
+body {
+  background: #E9E7EC;
+  color: #1E1B26;
+  font-family: 'Space Grotesk', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+::placeholder { color: #A6A29A; }
+input:focus, textarea:focus { outline: none; }
+button { font-family: inherit; }
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-thumb { background: #D6D2C8; border-radius: 8px; border: 3px solid transparent; background-clip: content-box; }
+
+@keyframes vr-breathe { 0%,100% { transform: scale(1); } 50% { transform: scale(1.04); } }
+@keyframes vr-shake { 0%,100% { transform: translateX(0) rotate(0); } 20% { transform: translateX(-3px) rotate(-2deg); } 40% { transform: translateX(3px) rotate(2deg); } 60% { transform: translateX(-2px) rotate(-1deg); } 80% { transform: translateX(2px) rotate(1deg); } }
+@keyframes vr-think { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+@keyframes vr-pulse { 0% { transform: scale(0.6); opacity: 0.55; } 100% { transform: scale(1.5); opacity: 0; } }
+@keyframes vr-rise { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes vr-scan { 0% { top: 0; } 100% { top: 100%; } }
+@keyframes vr-blink { 0%,92%,100% { transform: scaleY(1); } 96% { transform: scaleY(0.1); } }
+.vr-row { animation: vr-rise .42s cubic-bezier(.2,.7,.3,1) both; }

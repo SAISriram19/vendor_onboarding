@@ -1,0 +1,11 @@
+{
+  "_label": "Edge \u2014 different vendor reusing an existing vendor's bank account",
+  "legal_name": "Falcon Trade Exports Private Limited",
+  "country": "IN",
+  "tax_id": "27AAFCF1234R1ZB",
+  "bank_name": "HDFC Bank",
+  "account_name": "Falcon Trade Exports Private Limited",
+  "iban": "IN78HDFC000123456789012",
+  "contact_email": "accounts@falcontrade.in",
+  "documents": {}
+}

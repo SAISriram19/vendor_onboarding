@@ -1,0 +1,11 @@
+{
+  "_label": "Edge \u2014 bank account holder doesn't match vendor (fraud risk)",
+  "legal_name": "Zoho Corporation Private Limited",
+  "country": "IN",
+  "tax_id": "33AAACZ4321Q1Z3",
+  "bank_name": "ICICI Bank",
+  "account_name": "Rahul Sharma",
+  "iban": "IN80ICIC000445510293847",
+  "contact_email": "ap@zohocorp.com",
+  "documents": {}
+}

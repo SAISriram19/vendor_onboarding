@@ -1,0 +1,11 @@
+{
+  "_label": "Edge \u2014 tax ID format wrong for country (US EIN claimed as Indian)",
+  "legal_name": "Sundaram Auto Components Private Limited",
+  "country": "IN",
+  "tax_id": "47-3829100",
+  "bank_name": "HDFC Bank",
+  "account_name": "Sundaram Auto Components Private Limited",
+  "iban": "IN09HDFC000998812340000",
+  "contact_email": "finance@sundaram-auto.in",
+  "documents": {}
+}

@@ -1,0 +1,23 @@
+[
+  {
+    "id": "V-1001",
+    "legal_name": "Infosys Limited",
+    "country": "IN",
+    "tax_id": "29AAACI4321A1Z6",
+    "iban": "IN78HDFC000123456789012"
+  },
+  {
+    "id": "V-1002",
+    "legal_name": "Tata Consultancy Services Limited",
+    "country": "IN",
+    "tax_id": "27AAACT2727M1Z4",
+    "iban": "IN91ICIC000223344556677"
+  },
+  {
+    "id": "V-1003",
+    "legal_name": "Wipro Limited",
+    "country": "IN",
+    "tax_id": "29AAACW9999K1Z5",
+    "iban": "IN29SBIN000998877665544"
+  }
+]

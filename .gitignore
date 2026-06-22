@@ -1,0 +1,21 @@
+# SECRETS — never commit
+.env
+*.key
+
+# python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# node / frontend build
+web/node_modules/
+web/dist/
+node_modules/
+
+# runtime data (regenerated)
+data/runs.json
+
+# os
+Thumbs.db
+.DS_Store
